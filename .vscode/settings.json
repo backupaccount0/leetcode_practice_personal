@@ -93,7 +93,13 @@
         "shared_mutex": "cpp",
         "variant": "cpp",
         "bit": "cpp",
-        "core": "cpp"
+        "core": "cpp",
+        "mixinvector": "cpp",
+        "fast_back_stack": "cpp",
+        "bufferobject": "cpp",
+        "image": "cpp",
+        "texture": "cpp",
+        "buffered_value": "cpp"
     },
     "clang-tidy.buildPath": "build",
     "clang-tidy.fixOnSave": true,

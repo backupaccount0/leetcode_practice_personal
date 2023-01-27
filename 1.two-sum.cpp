@@ -11,21 +11,14 @@
 using namespace std;
 
 class Solution {
-public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        if (nums.empty()) {
-            return vector<int>{};
-        }
-        std::unordered_map <int, int> hasp_map;
-        for (int i = 0; i < nums.size(); ++i) {
-            int complement = target - nums[i];
-            if (hasp_map.find(complement) == hasp_map.end()) {
-                hasp_map[nums[i]] = i;
-            } else {
-                return vector<int>{i, hasp_map[complement]};
-            }
-        }
-        return vector<int>{};
+ public:
+  vector<int> twoSum(vector<int>& nums, int target) {
+    unordered_map<int, int> map;
+    for (int i = 0; i < nums.size(); ++i) {
+      if (map.find(target - nums[i]) != map.end()) { return vector<int>{i, map[target - nums[i]]}; }
+      map.insert(pair<int, int>(nums[i], i));
     }
+    return {};
+  }
 };
 // @lc code=end
