@@ -74,9 +74,9 @@ class Solution {
         int lp = j + 1;
         int rp = nums.size() - 1;
         while (lp < rp) {
-          if ((long)nums[i] + (long)nums[j] + (long)nums[lp] + (long)nums[rp] > target) {
+          if (((long)nums[i] + (long)nums[j] + (long)nums[lp] + (long)nums[rp]) > target) {
             rp--;
-          } else if ((long)nums[i] + (long)nums[j] + (long)nums[lp] + (long)nums[rp] < target) {
+          } else if (((long)nums[i] + (long)nums[j] + (long)nums[lp] + (long)nums[rp]) < target) {
             lp++;
           } else {
             res.emplace_back(vector<int>{nums[i], nums[j], nums[lp], nums[rp]});
