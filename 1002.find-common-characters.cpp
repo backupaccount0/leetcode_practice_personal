@@ -58,5 +58,5 @@ class Solution {
     }
     return repeated_letters;
   }
-};
+}; 
 // @lc code=end
