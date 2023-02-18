@@ -66,45 +66,29 @@ using namespace std;
 class Solution {
  public:
   vector<string> letterCombinations(string digits) {
-    vector<string> solutions{};
-    if (digits.empty()) { return solutions; }
-    string state = "";
-    Search(state, solutions, digits);
-    return solutions;
+    if (digits.empty()) { return {}; }
+    vector<string> res;
+    string path;
+    backtracking(res, path, digits, 0);
+    return res;
   }
-
- private:
-  bool IsStateValid(string state, string digits) { return state.size() == digits.size(); }
-  string GetCandidate(string state, string digits) {
-    string candidate = "";
-    if (state.size() == digits.size()) { return candidate; }
-    char num = digits[state.size()];
-    candidate = letter_digit_map[num];
-    return candidate;
-  }
-  void Search(string state, vector<string>& soultions, string digits) {
-    if (IsStateValid(state, digits)) {
-      soultions.push_back(state);
+  void backtracking(vector<string>& res, string& path, string& digits, int index) {
+    if (path.size() == digits.size()) {
+      res.push_back(path);
       return;
     }
-    string candidate = GetCandidate(state, digits);
-    for (auto c : candidate) {
-      state.push_back(c);
-      Search(state, soultions, digits);
-      state.pop_back();
+
+    int digit = digits[index] - '0';
+    string valid_letters = digit2letter_map.at(digit - 2);
+
+    for (int k = 0; k < valid_letters.size(); ++k) {
+      path.push_back(valid_letters.at(k));
+      backtracking(res, path, digits, index + 1);
+      path.pop_back();
     }
   }
 
  private:
-  const map<char, string> letter_digit_map{
-      {'2', "abc"},
-      {'3', "def"},
-      {'4', "ghi"},
-      {'5', "jkl"},
-      {'6', "mno"},
-      {'7', "pqrs"},
-      {'8', "tuv"},
-      {'9', "wxyz"},
-  };
+  vector<string> digit2letter_map = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
 };
 // @lc code=end

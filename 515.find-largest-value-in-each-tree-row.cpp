@@ -1,50 +1,42 @@
 /*
- * @lc app=leetcode id=199 lang=cpp
+ * @lc app=leetcode id=515 lang=cpp
  *
- * [199] Binary Tree Right Side View
+ * [515] Find Largest Value in Each Tree Row
  *
- * https://leetcode.com/problems/binary-tree-right-side-view/description/
+ * https://leetcode.com/problems/find-largest-value-in-each-tree-row/description/
  *
  * algorithms
- * Medium (61.21%)
- * Likes:    9060
- * Dislikes: 539
- * Total Accepted:    873.3K
- * Total Submissions: 1.4M
- * Testcase Example:  '[1,2,3,null,5,null,4]'
+ * Medium (64.63%)
+ * Likes:    2522
+ * Dislikes: 93
+ * Total Accepted:    220.1K
+ * Total Submissions: 340.6K
+ * Testcase Example:  '[1,3,2,5,3,null,9]'
  *
- * Given the root of a binary tree, imagine yourself standing on the right side
- * of it, return the values of the nodes you can see ordered from top to
- * bottom.
+ * Given the root of a binary tree, return an array of the largest value in
+ * each row of the tree (0-indexed).
  *
  *
  * Example 1:
  *
  *
- * Input: root = [1,2,3,null,5,null,4]
- * Output: [1,3,4]
+ * Input: root = [1,3,2,5,3,null,9]
+ * Output: [1,3,9]
  *
  *
  * Example 2:
  *
  *
- * Input: root = [1,null,3]
+ * Input: root = [1,2,3]
  * Output: [1,3]
- *
- *
- * Example 3:
- *
- *
- * Input: root = []
- * Output: []
  *
  *
  *
  * Constraints:
  *
  *
- * The number of nodes in the tree is in the range [0, 100].
- * -100 <= Node.val <= 100
+ * The number of nodes in the tree will be in the range [0, 10^4].
+ * -2^31 <= Node.val <= 2^31 - 1
  *
  *
  */
@@ -63,19 +55,21 @@
  */
 class Solution {
  public:
-  vector<int> rightSideView(TreeNode* root) {
+  vector<int> largestValues(TreeNode* root) {
     if (!root) { return {}; }
     vector<int> res;
     queue<TreeNode*> que;
     que.push(root);
     while (!que.empty()) {
       int s = que.size();
+      int max = INT_MIN;
       for (int i = 0; i < s; ++i) {
+        if (que.front()->val > max) { max = que.front()->val; }
         if (que.front()->left) { que.push(que.front()->left); }
         if (que.front()->right) { que.push(que.front()->right); }
-        if (i == s - 1) { res.push_back(que.front()->val); }
         que.pop();
       }
+      res.push_back(max);
     }
     return res;
   }
