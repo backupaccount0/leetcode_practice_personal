@@ -72,18 +72,18 @@ class Solution {
     backtracking(res, path, digits, 0);
     return res;
   }
-  void backtracking(vector<string>& res, string& path, string& digits, int index) {
+
+ private:
+  void backtracking(vector<string>& res, string& path, string& digits, int start_index) {
     if (path.size() == digits.size()) {
       res.push_back(path);
       return;
     }
 
-    int digit = digits[index] - '0';
-    string valid_letters = digit2letter_map.at(digit - 2);
-
-    for (int k = 0; k < valid_letters.size(); ++k) {
-      path.push_back(valid_letters.at(k));
-      backtracking(res, path, digits, index + 1);
+    string candidates = digit2letter_map.at(digits[start_index] - '0' - 2);
+    for (int i = 0; i < candidates.size(); ++i) {
+      path.push_back(candidates[i]);
+      backtracking(res, path, digits, start_index + 1);
       path.pop_back();
     }
   }

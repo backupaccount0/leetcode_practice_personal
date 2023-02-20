@@ -99,7 +99,8 @@
         "bufferobject": "cpp",
         "image": "cpp",
         "texture": "cpp",
-        "buffered_value": "cpp"
+        "buffered_value": "cpp",
+        "graphicscontext": "cpp"
     },
     "clang-tidy.buildPath": "build",
     "clang-tidy.fixOnSave": true,

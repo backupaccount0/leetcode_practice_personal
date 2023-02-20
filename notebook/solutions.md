@@ -1021,5 +1021,136 @@ node1的右节点赋值为 递归调用函数本身的结果，参数节点改�
 
 
 # 七、 回溯
+回溯法，一般可以解决如下几种问题：
 
+    组合问题：N个数里面按一定规则找出k个数的集合
+
+    切割问题：一个字符串按一定规则有几种切割方式
+
+    子集问题：一个N个数的集合里有多少符合条件的子集
+
+    排列问题：N个数按一定规则全排列，有几种排列方式
+
+    棋盘问题：N皇后，解数独等等
+
+回溯公式：
+```
+void backtracking(&res, &path, ...) {
+    if (stop_condition) {
+        res.push_back(path);
+        return;
+    }
+
+    if (trim_condition) { return; } //(optional)
+
+    for (choice in choices) {
+        if (trim_condition) { return; } //(optional)
+        path.push_back(choice);
+        //... other operations, like  sum += i, used = true;
+        backtracking(res, path, ...);
+        path.pop_back();
+        //... other operations, like  sum -= i, used = false;
+    }
+}
+```
 ## 76. #77 组合
+组合
+
+void backtracking(res, path, n , k, start_index)
+
+start_index 表示本次递归可选项在所有候选项列表中的起始位置，维护更新start_index能够避免解的路径出现重复的元素
+
+终止条件：path的size等于k
+
+剪枝条件：k-path.size()表示还需要添加到一个解中的元素个数，
+
+n-start_index+1表示从start_index起还有多少个候选项，
+
++1是因为从start_index是1开始的，比如n=4, start_index=1，应有4个候选项，1，2，3，4可用
+
+剪枝条件：k - path.size() > n - start_index + 1,也就是可用的选项比需要的个数少，那就没有搜索下去的必要了，直接return掉
+
+否则，在每次递归内，候选项：[start_index, n]，
+
+for循环将候选项添加到解path中，
+
+再调用backtracking函数，start_index更新为i+1
+
+调用结束后，pop_back掉path的最后一个元素
+
+## 78. #216 组合Ⅲ
+
+void backtracking(res, path, k, n, start_index)
+
+维护一个私有成员变量，记录和值
+
+终止条件：path size等于k，和等于n
+
+剪枝条件：
+
+1. for循环外，与77题组合类似，当可用选项的个数不足时，直接return
+
+2. for循环内，若出现了之前的和加上当前值大于n，那么也可以直接return
+
+否则，加长path；backtracking(),start_index=i+1；path popback，和减掉当前值
+
+## 79. #17 电话号码的字母组合
+
+声明一个数字到字母的映射，可以用vector，index代替数字
+
+终止条件：path size等于输入数字字符串digits size
+
+候选项：每个数字对应的所有字母
+
+backtracking更新的参数：start_index->start_index+1
+
+## 80. #39 组合总和
+
+维护一个私有成员变量，记录和值
+
+对candidates 排序sort
+
+终止条件：和等于target
+
+剪枝条件：for 循环内，若已有和值加上当前值大于target，则return
+
+候选项: 从start_index起的所有candidates
+
+backtracking，start_index =  i，（不加1因为允许重复）
+
+在路径中增删元素的同时，要修改和值
+## 81. #40 组合总和Ⅱ
+
+维护一个私有成员变量，记录和值
+
+对candidates 排序sort
+
+终止条件：和等于target
+
+剪枝条件：
+
+1. for 循环内，若已有和值加上当前值大于target，则return
+
+2. 若当前的元素值和上一个元素值相同，且上一个元素不再路径内，
+那么说明这两个元素重复出现在同一层，应该去重处理，直接continue，注意不是return，因为还要遍历这一层的其他元素。<br>
+之所以要检查上一个元素是否被使用了，是要保证同一个值可以出现在不同层，构成解的不同元素，但不能出现在同一层，因为这样会导致出现重复解
+
+候选项: 从start_index起的所有candidates
+
+backtracking，start_index = i+1，
+
+在路径中增删元素的同时，要修改和值，和used布尔数组（对应candidates的元素在不在路径中）
+
+## 82. #131 分割回文串
+
+维护一个私有成员变量，记录字符串的总长度
+
+终止条件：路径数组中的每一个字符串都是回文（左右指针判断），且数组中字符串的总长度等于输入字符串的长度
+
+剪枝条件：路径中出现非回文元素，直接return
+
+for循环，循环的是新添加进路径中的子字符串的长度i， i：[1, s.size()-start_index]
+
+backtracking，start_index = start_index + i，
+
+在路径中增删元素的同时，要修改总长度值

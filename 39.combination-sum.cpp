@@ -69,23 +69,29 @@ class Solution {
   vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
     vector<vector<int>> res;
     vector<int> path;
+    sort(candidates.begin(), candidates.end());
     backtracking(res, path, candidates, target, 0);
     return res;
   }
 
  private:
-  void backtracking(
-      vector<vector<int>>& res, vector<int>& path, const vector<int>& candidates, const int target, int start) {
-    if (accumulate(path.begin(), path.end(), 0) >= target) {
-      if (accumulate(path.begin(), path.end(), 0) == target) { res.push_back(path); }
+  void backtracking(vector<vector<int>>& res, vector<int>& path, vector<int>& candidates, int target, int start_index) {
+    if (sum_ == target) {
+      res.push_back(path);
       return;
     }
 
-    for (int i = start; i < candidates.size(); ++i) {
+    for (int i = start_index; i < candidates.size(); ++i) {
+      if (sum_ + candidates[i] > target) { return; }
       path.push_back(candidates[i]);
+      sum_ += candidates[i];
       backtracking(res, path, candidates, target, i);
       path.pop_back();
+      sum_ -= candidates[i];
     }
   }
+
+ private:
+  int sum_;
 };
 // @lc code=end

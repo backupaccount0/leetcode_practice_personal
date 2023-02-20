@@ -73,28 +73,28 @@ class Solution {
   vector<vector<int>> combinationSum3(int k, int n) {
     vector<vector<int>> res;
     vector<int> path;
-    backtracking(res, path, k, n, 1, 0);
+    backtracking(res, path, k, n, 1);
     return res;
   }
-  void backtracking(vector<vector<int>>& res, vector<int>& path, int k, int n, int start, int sum) {
-    if (path.size() == k && accumulate(path.begin(), path.end(), 0) == n) {
+
+ private:
+  void backtracking(vector<vector<int>>& res, vector<int>& path, int k, int n, int start_index) {
+    if (path.size() == k && sum_ == n) {
       res.push_back(path);
       return;
     }
-    for (int i = start; i <= 9 - k + path.size() + 1; ++i) {
+    if (9 - start_index + 1 < k - path.size()) { return; }
+    for (int i = start_index; i <= 9; ++i) {
+      if (sum_ + i > n) { return; }
       path.push_back(i);
-      sum += i;
-      {
-        if (sum > n) {
-          sum -= i;
-          path.pop_back();
-          return;
-        }
-      }
-      backtracking(res, path, k, n, i + 1, sum);
-      sum -= i;
+      sum_ += i;
+      backtracking(res, path, k, n, i + 1);
       path.pop_back();
+      sum_ -= i;
     }
   }
+
+ private:
+  int sum_ = 0;
 };
 // @lc code=end

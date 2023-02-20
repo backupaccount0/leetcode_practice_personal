@@ -76,43 +76,41 @@ using namespace std;
 class Solution {
  public:
   vector<string> restoreIpAddresses(string s) {
-    vector<string> solutions{};
-    string state = "";
-    Search(state, solutions, s);
-    return solutions;
+    vector<string> res;
+    vector<string> path;
+    backtracking(res, path, s, 0);
+    return res;
   }
 
  private:
-  bool IsValidState(string state, string s) { return (state.size() == s.size() + 3); }
-  string GetCandidate(string state, string s) {
-    int last_dot_index = state.rfind('.');
-    if (last_dot_index == string::npos) { last_dot_index = -1; }
-    string sub_str;
-    sub_str = state.substr(last_dot_index + 1, state.size());
-    string candidate;
-    int num_dots = count(state.begin(), state.end(), '.');
-    if (state.size() >= s.size() + 3) {
-      candidate = "";
-    } else {
-      if ((stoi(sub_str + s[state.size() - num_dots]) < 256) && (sub_str != "0") &&
-          (s.substr(state.size() - num_dots, s.size()).size() > (3 - num_dots))) {
-        candidate.push_back(s[state.size() - num_dots]);
+  void backtracking(vector<string>& res, vector<string>& path, string& s, int start_index) {
+    if (stoi(path.back()) >= 0 && stoi(path.back()) <= 255) {
+      if (path.size() == 4 && len_ == s.size()) {
+        res.push_back(vec2str(path));
+        return;
       }
-      if (sub_str != "" && num_dots < 3) { candidate.push_back('.'); }
-    }
-    return candidate;
-  }
-  void Search(string state, vector<string>& solutions, string s) {
-    if (IsValidState(state, s)) {
-      solutions.push_back(state);
+    } else {
       return;
     }
-    string candidate = GetCandidate(state, s);
-    for (auto c : candidate) {
-      state.push_back(c);
-      Search(state, solutions, s);
-      state.pop_back();
+
+    for (int i = 1; i <= s.size() - start_index; ++i) {
+      path.push_back(s.substr(start_index, i));
+      len_ += i;
+      backtracking(res, path, s, start_index + i);
+      path.pop_back();
+      len_ -= i;
     }
   }
+  string vec2str(const vector<string>& vec) {
+    string s;
+    for (int i = 0; i < vec.size(); ++i) {
+      s += vec[i];
+      if (i <= vec.size() - 1) { s += "."; }
+    }
+    return s;
+  }
+
+ private:
+  int len_ = 0;
 };
 // @lc code=end

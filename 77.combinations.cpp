@@ -56,12 +56,17 @@ class Solution {
     backtracking(res, path, n, k, 1);
     return res;
   }
-  void backtracking(vector<vector<int>>& res, vector<int>& path, int n, int k, int start) {
+
+ private:
+  void backtracking(vector<vector<int>>& res, vector<int>& path, int n, int k, int start_index) {
     if (path.size() == k) {
       res.push_back(path);
       return;
     }
-    for (int i = start; i <= n - k + path.size()+1; ++i) {
+
+    if (n - start_index + 1 < k - path.size()) { return; }
+
+    for (int i = start_index; i <= n; ++i) {
       path.push_back(i);
       backtracking(res, path, n, k, i + 1);
       path.pop_back();

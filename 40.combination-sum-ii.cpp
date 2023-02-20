@@ -69,37 +69,36 @@ using namespace std;
 class Solution {
  public:
   vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-    sort(candidates.begin(), candidates.end());
     vector<vector<int>> res;
     vector<int> path;
-    vector<bool> used;
-    used.resize(candidates.size());
+    vector<bool> used(candidates.size(), false);
+    sort(candidates.begin(), candidates.end());
     backtracking(res, path, candidates, target, 0, used);
     return res;
   }
 
  private:
   void backtracking(
-      vector<vector<int>>& res, vector<int>& path, vector<int>& candidates, int target, int start, vector<bool>& used) {
-    if (accumulate(path.begin(), path.end(), 0) == target) {
+      vector<vector<int>>& res,
+      vector<int>& path,
+      vector<int>& candidates,
+      int target,
+      int start_index,
+      vector<bool>& used) {
+    if (sum_ == target) {
       res.push_back(path);
       return;
     }
-
-    for (int i = start; i < candidates.size(); ++i) {
+    for (int i = start_index; i < candidates.size(); ++i) {
+      if (sum_ + candidates[i] > target) { return; }
       if (i > 0 && candidates[i] == candidates[i - 1] && !used[i - 1]) { continue; }
-      sum_ += candidates.at(i);
-      if (sum_ > target) {
-        sum_ -= candidates.at(i);
-        return;
-      }
-      path.push_back(candidates.at(i));
+      path.push_back(candidates[i]);
+      sum_ += candidates[i];
       used[i] = true;
-
       backtracking(res, path, candidates, target, i + 1, used);
       path.pop_back();
+      sum_ -= candidates[i];
       used[i] = false;
-      sum_ -= candidates.at(i);
     }
   }
 
