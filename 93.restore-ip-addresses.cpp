@@ -84,17 +84,18 @@ class Solution {
 
  private:
   void backtracking(vector<string>& res, vector<string>& path, string& s, int start_index) {
-    if (stoi(path.back()) >= 0 && stoi(path.back()) <= 255) {
-      if (path.size() == 4 && len_ == s.size()) {
-        res.push_back(vec2str(path));
-        return;
-      }
-    } else {
+    if (path.size() == 4 && len_ == s.size()) {
+      res.push_back(vec2str(path));
       return;
     }
 
-    for (int i = 1; i <= s.size() - start_index; ++i) {
-      path.push_back(s.substr(start_index, i));
+    if (path.size() > 4 || (s.size() - len_) / 3 > 4 - path.size()) { return; }
+
+    int end = (s.size() - start_index > 3 ? 3 : s.size() - start_index);
+    for (int i = 1; i <= end; ++i) {
+      string sub_str = s.substr(start_index, i);
+      if ((sub_str.front() == '0' && i > 1) || ((stoi(sub_str) < 0 || stoi(sub_str) > 255))) { return; }
+      path.push_back(sub_str);
       len_ += i;
       backtracking(res, path, s, start_index + i);
       path.pop_back();
@@ -105,7 +106,7 @@ class Solution {
     string s;
     for (int i = 0; i < vec.size(); ++i) {
       s += vec[i];
-      if (i <= vec.size() - 1) { s += "."; }
+      if (i < vec.size() - 1) { s += "."; }
     }
     return s;
   }
